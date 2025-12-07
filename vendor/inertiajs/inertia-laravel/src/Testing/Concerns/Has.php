@@ -7,10 +7,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\Assert as PHPUnit;
 
-/**
- * @deprecated This trait is deprecated and will be removed in a future version.
- * @see https://github.com/inertiajs/inertia-laravel/pull/338
- */
 trait Has
 {
     protected function count(string $key, int $length): self
@@ -40,10 +36,11 @@ trait Has
     }
 
     /**
-     * @param  mixed  $value
+     * @param mixed $value
+     *
      * @return $this
      */
-    public function has(string $key, $value = null, ?Closure $scope = null): self
+    public function has(string $key, $value = null, Closure $scope = null): self
     {
         PHPUnit::assertTrue(
             Arr::has($this->prop(), $key),
@@ -111,7 +108,7 @@ trait Has
         return $this->missing($key);
     }
 
-    abstract protected function prop(?string $key = null);
+    abstract protected function prop(string $key = null);
 
     abstract protected function dotPath(string $key): string;
 

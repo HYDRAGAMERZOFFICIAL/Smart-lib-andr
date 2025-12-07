@@ -45,10 +45,10 @@ export default class Route {
         return !this.config.absolute
             ? ''
             : this.definition.domain
-            ? `${this.config.url.match(/^\w+:\/\//)[0]}${this.definition.domain}${
-                  this.config.port ? `:${this.config.port}` : ''
-              }`
-            : this.config.url;
+              ? `${this.config.url.match(/^\w+:\/\//)[0]}${this.definition.domain}${
+                    this.config.port ? `:${this.config.port}` : ''
+                }`
+              : this.config.url;
     }
 
     /**
@@ -80,6 +80,7 @@ export default class Route {
         // Transform the route's template into a regex that will match a hydrated URL,
         // by replacing its parameter segments with matchers for parameter values
         const pattern = this.template
+            .replace(/[.*+$()[\]]/g, '\\$&')
             .replace(/(\/?){([^}?]*)(\??)}/g, (_, slash, segment, optional) => {
                 const regex = `(?<${segment}>${
                     this.wheres[segment]?.replace(/(^\^)|(\$$)/g, '') || '[^/?]+'
@@ -90,7 +91,9 @@ export default class Route {
 
         const [location, query] = url.replace(/^\w+:\/\//, '').split('?');
 
-        const matches = new RegExp(`^${pattern}/?$`).exec(decodeURI(location));
+        const matches =
+            new RegExp(`^${pattern}/?$`).exec(location) ??
+            new RegExp(`^${pattern}/?$`).exec(decodeURI(location));
 
         if (matches) {
             for (const k in matches.groups) {
@@ -116,6 +119,8 @@ export default class Route {
 
         if (!segments.length) return this.template;
 
+        // This should probably be refactored to build the host and path separately (not the entire URL at once)
+        // because that's how Laravel does it internally and it's more precise and less error-prone
         return this.template
             .replace(/{([^}?]+)(\??)}/g, (_, segment, optional) => {
                 // If the parameter is missing but is not optional, throw an error
@@ -132,7 +137,7 @@ export default class Route {
                         ).test(params[segment] ?? '')
                     ) {
                         throw new Error(
-                            `Ziggy error: '${segment}' parameter does not match required format '${this.wheres[segment]}' for route '${this.name}'.`,
+                            `Ziggy error: '${segment}' parameter '${params[segment]}' does not match required format '${this.wheres[segment]}' for route '${this.name}'.`,
                         );
                     }
                 }
@@ -142,7 +147,7 @@ export default class Route {
                     .replace(/%25/g, '%')
                     .replace(/\$/g, '%24');
             })
-            .replace(`${this.origin}//`, `${this.origin}/`)
+            .replace(this.config.absolute ? /(\.[^/]+?)(\/\/)/ : /(^)(\/\/)/, '$1/')
             .replace(/\/+$/, '');
     }
 }

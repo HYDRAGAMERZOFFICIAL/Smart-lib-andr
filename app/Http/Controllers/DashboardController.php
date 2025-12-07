@@ -2,57 +2,69 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use App\Models\Book;
-use App\Models\IssuedBook;
+use App\Models\Loan;
+use App\Models\BookCopy;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
-        
-        if (!$user || !$user->is_approved) {
-            return redirect('/login');
+
+        $startDate = $request->input('start_date') ? Carbon::parse($request->input('start_date')) : Carbon::now()->startOfMonth();
+        $endDate = $request->input('end_date') ? Carbon::parse($request->input('end_date'))->endOfDay() : Carbon::now()->endOfMonth()->endOfDay();
+
+        if ($endDate->lt($startDate)) {
+            $endDate = (clone $startDate)->lastOfMonth();
         }
+
+        $dateRange = [
+            'start_date' => $startDate->format('Y-m-d'),
+            'end_date' => $endDate->format('Y-m-d')
+        ];
+
+        $totalStudents = Student::where('created_by', $user->id)->count();
+        $pendingApprovals = Student::where('created_by', $user->id)->where('status', 'pending')->count();
+        $totalBooks = Book::count();
+        $totalBookCopies = BookCopy::count();
         
-        $activeLoans = IssuedBook::where('user_id', $user->id)
-            ->where('status', 'issued')
+        $booksIssuedToday = Loan::where('issued_by_id', $user->id)
+            ->whereDate('issued_date', today())
             ->count();
 
-        $overdueBooks = IssuedBook::where('user_id', $user->id)
-            ->where('status', 'issued')
+        $dueSoon = Loan::where('issued_by_id', $user->id)
+            ->where('due_date', '>', now())
+            ->where('due_date', '<=', now()->addDays(3))
+            ->where('status', 'active')
+            ->count();
+
+        $overdue = Loan::where('issued_by_id', $user->id)
             ->where('due_date', '<', now())
+            ->where('status', 'active')
             ->count();
 
-        $totalFines = IssuedBook::where('user_id', $user->id)
-            ->whereNotNull('fine')
-            ->sum('fine') ?? 0;
+        $userLoans = Loan::where('issued_by_id', $user->id)
+            ->with('student', 'bookCopy.book')
+            ->whereBetween('issued_date', [$startDate, $endDate])
+            ->orderBy('issued_date', 'desc')
+            ->paginate(10)
+            ->withQueryString();
 
-        $recentBooks = Book::orderBy('created_at', 'desc')
-            ->limit(5)
-            ->get();
-
-        return Inertia::render('Dashboard', [
-            'stats' => [
-                'activeLoans' => $activeLoans,
-                'overdueBooks' => $overdueBooks,
-                'totalFines' => number_format($totalFines, 2),
-                'recentBooks' => $recentBooks->map(function ($book) {
-                    return [
-                        'id' => $book->id,
-                        'title' => $book->title,
-                        'author' => $book->author,
-                        'availableCopies' => $book->available_copies,
-                    ];
-                }),
-            ],
+        return inertia('Dashboard', [
+            'totalStudents' => $totalStudents,
+            'pendingApprovals' => $pendingApprovals,
+            'totalBooks' => $totalBooks,
+            'totalBookCopies' => $totalBookCopies,
+            'booksIssuedToday' => $booksIssuedToday,
+            'dueSoon' => $dueSoon,
+            'overdue' => $overdue,
+            'userLoans' => $userLoans,
+            'dateRange' => $dateRange,
         ]);
     }
 }

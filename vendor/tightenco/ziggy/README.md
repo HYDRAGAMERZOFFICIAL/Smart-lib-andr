@@ -10,8 +10,6 @@
 
 Ziggy provides a JavaScript `route()` function that works like Laravel's, making it a breeze to use your named Laravel routes in JavaScript.
 
-Ziggy supports all versions of Laravel from `5.4` onward, and all modern browsers.
-
 - [**Installation**](#installation)
 - [**Usage**](#usage)
     - [`route()` function](#route-function)
@@ -46,7 +44,7 @@ Add the `@routes` Blade directive to your main layout (_before_ your application
 
 ### `route()` function
 
-Ziggy's `route()` function works like [Laravel's `route()` helper](https://laravel.com/docs/10.x/helpers#method-route)—you can pass it the name of a route, and the parameters you want to pass to the route, and it will generate a URL.
+Ziggy's `route()` function works like [Laravel's `route()` helper](https://laravel.com/docs/helpers#method-route)—you can pass it the name of a route, and the parameters you want to pass to the route, and it will generate a URL.
 
 #### Basic usage
 
@@ -270,7 +268,7 @@ php artisan ziggy:generate --types
 To make your IDE aware that Ziggy's `route()` helper is available globally, and to type it correctly, add a declaration like this in a `.d.ts` file somewhere in your project:
 
 ```ts
-import routeFn from 'ziggy-js';
+import { route as routeFn } from 'ziggy-js';
 
 declare global {
     var route: typeof routeFn;
@@ -336,7 +334,7 @@ export { Ziggy };
 You can import Ziggy like any other JavaScript library. Without the `@routes` Blade directive Ziggy's config is not available globally, so it must be passed to the `route()` function manually:
 
 ```js
-import route from '../../vendor/tightenco/ziggy';
+import { route } from '../../vendor/tightenco/ziggy';
 import { Ziggy } from './ziggy.js';
 
 route('home', undefined, undefined, Ziggy);
@@ -351,7 +349,6 @@ export default defineConfig({
     resolve: {
         alias: {
             'ziggy-js': path.resolve('vendor/tightenco/ziggy'),
-            // 'vendor/tightenco/ziggy/dist/vue.es.js' if using the Vue plugin
         },
     },
 });
@@ -360,7 +357,7 @@ export default defineConfig({
 Now your imports can be shortened to:
 
 ```js
-import route from 'ziggy-js';
+import { route } from 'ziggy-js';
 ```
 
 ### Vue
@@ -381,6 +378,16 @@ Now you can use the `route()` function anywhere in your Vue components and templ
 <a class="nav-link" :href="route('home')">Home</a>
 ```
 
+With `<script setup>` in Vue 3 you can use `inject` to make the `route()` function available in your component script:
+
+```vue
+<script setup>
+import { inject } from 'vue';
+
+const route = inject('route');
+</script>
+```
+
 If you are not using the `@routes` Blade directive, import Ziggy's configuration too and pass it to `.use()`:
 
 ```js
@@ -392,7 +399,15 @@ import App from './App.vue';
 createApp(App).use(ZiggyVue, Ziggy);
 ```
 
-If you use the Vue plugin with the `ziggy-js` import alias shown above, make sure to update the alias to `'vendor/tightenco/ziggy/dist/vue.es.js'`.
+If you're using TypeScript, you may need to add the following declaration to a `.d.ts` file in your project to avoid type errors when using the `route()` function in your Vue component templates:
+
+```ts
+declare module 'vue' {
+    interface ComponentCustomProperties {
+        route: typeof routeFn;
+    }
+}
+```
 
 ### React
 
@@ -528,14 +543,14 @@ If you need to retrieve Ziggy's config from your Laravel backend over the networ
 ```php
 // routes/api.php
 
-use Tightenco\Ziggy\Ziggy;
+use Tighten\Ziggy\Ziggy;
 
-Route::get('api/ziggy', fn () => response()->json(new Ziggy));
+Route::get('ziggy', fn () => response()->json(new Ziggy));
 ```
 
 ### Re-generating the routes file when your app routes change
 
-If you are generating your Ziggy config as a file by running `php artisan ziggy:generate`, you may want to re-run that command when your app's route files change. The example below is a Laravel Mix plugin, but similar functionality could be achieved without Mix. Huge thanks to [Nuno Rodrigues](https://github.com/nacr) for [the idea and a sample implementation](https://github.com/tighten/ziggy/issues/321#issuecomment-689150082). See [#655 for a Vite example](https://github.com/tighten/ziggy/pull/655/files#diff-4aeb78f813e14842fcf95bdace9ced23b8a6eed60b23c165eaa52e8db2f97b61).
+If you are generating your Ziggy config as a file by running `php artisan ziggy:generate`, you may want to re-run that command when your app's route files change. The example below is a Laravel Mix plugin, but similar functionality could be achieved without Mix. Huge thanks to [Nuno Rodrigues](https://github.com/nacr) for [the idea and a sample implementation](https://github.com/tighten/ziggy/issues/321#issuecomment-689150082). See [#655](https://github.com/tighten/ziggy/pull/655/files#diff-4aeb78f813e14842fcf95bdace9ced23b8a6eed60b23c165eaa52e8db2f97b61) or [vite-plugin-ziggy](https://github.com/aniftyco/vite-plugin-ziggy) for Vite examples.
 
 <details>
 <summary>Laravel Mix plugin example</summary>

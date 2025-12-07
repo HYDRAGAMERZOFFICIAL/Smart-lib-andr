@@ -26,6 +26,7 @@ class NewAccessToken implements Arrayable, Jsonable
      *
      * @param  \Laravel\Sanctum\PersonalAccessToken  $accessToken
      * @param  string  $plainTextToken
+     * @return void
      */
     public function __construct(PersonalAccessToken $accessToken, string $plainTextToken)
     {
@@ -36,7 +37,7 @@ class NewAccessToken implements Arrayable, Jsonable
     /**
      * Get the instance as an array.
      *
-     * @return array<string, string>
+     * @return array
      */
     public function toArray()
     {

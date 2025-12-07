@@ -2,41 +2,55 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Book extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'isbn',
         'title',
         'author',
-        'publisher',
         'edition',
+        'publisher',
+        'isbn',
         'category',
-        'description',
+        'rack',
+        'shelf',
+        'course',
+        'semester',
         'cover_image',
+        'description',
         'total_copies',
         'available_copies',
-        'language',
-        'publication_year',
-        'barcode',
+        'is_archived'
     ];
 
-    protected function casts(): array
+    protected $casts = [
+        'is_archived' => 'boolean',
+    ];
+
+    public function copies()
     {
-        return [
-            'publication_year' => 'integer',
-            'total_copies' => 'integer',
-            'available_copies' => 'integer',
-        ];
+        return $this->hasMany(BookCopy::class);
     }
 
-    public function issuedBooks(): HasMany
+    public function availableCopies()
     {
-        return $this->hasMany(IssuedBook::class);
+        return $this->copies()->where('status', 'available');
+    }
+
+    public function loans()
+    {
+        return $this->hasMany(Loan::class);
+    }
+
+    public function updateAvailableCopiesCount()
+    {
+        $this->available_copies = $this->availableCopies()->count();
+        $this->total_copies = $this->copies()->count();
+        $this->save();
     }
 }

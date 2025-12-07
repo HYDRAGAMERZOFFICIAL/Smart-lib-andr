@@ -3,9 +3,7 @@
 namespace Inertia\Commands;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Attribute\AsCommand;
 
-#[AsCommand(name: 'inertia:stop-ssr')]
 class StopSsr extends Command
 {
     /**
@@ -23,7 +21,7 @@ class StopSsr extends Command
     protected $description = 'Stop the Inertia SSR server';
 
     /**
-     * Stop the Inertia SSR server.
+     * Stop the SSR server.
      */
     public function handle(): int
     {

@@ -2,33 +2,59 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Notification extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'user_id',
-        'title',
-        'body',
+        'student_id',
         'type',
-        'data',
+        'title',
+        'message',
+        'subject',
+        'channel',
+        'is_sent',
+        'sent_at',
         'is_read',
+        'read_at',
+        'send_error',
+        'created_by'
     ];
 
-    protected function casts(): array
+    protected $casts = [
+        'is_sent' => 'boolean',
+        'sent_at' => 'datetime',
+        'is_read' => 'boolean',
+        'read_at' => 'datetime',
+    ];
+
+    public function student()
     {
-        return [
-            'data' => 'json',
-            'is_read' => 'boolean',
-        ];
+        return $this->belongsTo(Student::class);
     }
 
-    public function user(): BelongsTo
+    public function markAsSent($error = null)
     {
-        return $this->belongsTo(User::class);
+        $this->update([
+            'is_sent' => true,
+            'sent_at' => now(),
+            'send_error' => $error
+        ]);
+
+        return $this;
+    }
+
+    public function markAsRead()
+    {
+        $this->update([
+            'is_read' => true,
+            'read_at' => now()
+        ]);
+
+        return $this;
     }
 }
