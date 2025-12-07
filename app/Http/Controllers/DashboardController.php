@@ -9,9 +9,18 @@ use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $user = Auth::user();
+        
+        if (!$user || !$user->is_approved) {
+            return redirect('/login');
+        }
         
         $activeLoans = IssuedBook::where('user_id', $user->id)
             ->where('status', 'issued')
@@ -24,7 +33,7 @@ class DashboardController extends Controller
 
         $totalFines = IssuedBook::where('user_id', $user->id)
             ->whereNotNull('fine')
-            ->sum('fine');
+            ->sum('fine') ?? 0;
 
         $recentBooks = Book::orderBy('created_at', 'desc')
             ->limit(5)
@@ -34,8 +43,15 @@ class DashboardController extends Controller
             'stats' => [
                 'activeLoans' => $activeLoans,
                 'overdueBooks' => $overdueBooks,
-                'totalFines' => $totalFines,
-                'recentBooks' => $recentBooks,
+                'totalFines' => number_format($totalFines, 2),
+                'recentBooks' => $recentBooks->map(function ($book) {
+                    return [
+                        'id' => $book->id,
+                        'title' => $book->title,
+                        'author' => $book->author,
+                        'availableCopies' => $book->available_copies,
+                    ];
+                }),
             ],
         ]);
     }

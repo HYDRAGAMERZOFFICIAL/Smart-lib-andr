@@ -25,6 +25,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/calendar', fn() => inertia('Calendar'))->name('calendar');
     Route::get('/notifications', fn() => inertia('Notifications'))->name('notifications');
     Route::get('/profile', fn() => inertia('Profile'))->name('profile');
+    Route::put('/profile', function () {
+        return back()->with('message', 'Profile updated successfully');
+    })->name('profile.update');
 });
 
 Route::redirect('/', '/dashboard');

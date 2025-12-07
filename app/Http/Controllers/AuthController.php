@@ -52,15 +52,16 @@ class AuthController extends Controller
         $validated = $request->validate([
             'fullName' => 'required|string|max:255',
             'idNumber' => 'required|string|unique:users,id_number',
-            'phone' => 'required|string',
+            'phone' => 'required|string|min:10',
             'department' => 'required|string',
             'semester' => 'required|string',
-            'password' => 'required|string|confirmed|min:8',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
-        $user = User::create([
+        User::create([
             'name' => $validated['fullName'],
             'id_number' => $validated['idNumber'],
+            'email' => $validated['idNumber'] . '@student.edu',
             'phone' => $validated['phone'],
             'department' => $validated['department'],
             'semester' => $validated['semester'],
@@ -68,6 +69,6 @@ class AuthController extends Controller
             'is_approved' => false,
         ]);
 
-        return redirect('/login')->with('message', 'Registration successful. Awaiting approval.');
+        return redirect('/login')->with('message', 'Registration successful. Your account is pending approval from the library administrator.');
     }
 }

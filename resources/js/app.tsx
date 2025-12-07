@@ -1,6 +1,7 @@
+import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
-import Layout from '@/layouts/Layout';
+import '../css/app.css';
 
 const appName = 'Smart Library';
 
