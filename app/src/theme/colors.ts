@@ -1,0 +1,61 @@
+export const Colors = {
+  primary: {
+    main: '#1976D2',
+    light: '#42A5F5',
+    dark: '#1565C0',
+  },
+  secondary: {
+    main: '#FF6B6B',
+    light: '#EF5350',
+    dark: '#E53935',
+  },
+  accent: {
+    main: '#FDB75A',
+    light: '#FFB74D',
+    dark: '#FFA726',
+  },
+  neutral: {
+    white: '#FFFFFF',
+    black: '#000000',
+    gray50: '#FAFAFA',
+    gray100: '#F5F5F5',
+    gray200: '#EEEEEE',
+    gray300: '#E0E0E0',
+    gray400: '#BDBDBD',
+    gray500: '#9E9E9E',
+    gray600: '#757575',
+    gray700: '#616161',
+    gray800: '#424242',
+    gray900: '#212121',
+  },
+  status: {
+    success: '#388E3C',
+    error: '#D32F2F',
+    warning: '#FFA726',
+    info: '#1976D2',
+  },
+  semantic: {
+    approved: '#4CAF50',
+    pending: '#FF9800',
+    rejected: '#F44336',
+    overdue: '#E91E63',
+    available: '#4CAF50',
+    issued: '#2196F3',
+  },
+  text: {
+    primary: '#212121',
+    secondary: '#757575',
+    disabled: '#BDBDBD',
+    hint: '#9E9E9E',
+  },
+  background: {
+    default: '#FFFFFF',
+    paper: '#FAFAFA',
+    light: '#F5F5F5',
+  },
+  border: {
+    light: '#EEEEEE',
+    medium: '#E0E0E0',
+    dark: '#BDBDBD',
+  },
+};
