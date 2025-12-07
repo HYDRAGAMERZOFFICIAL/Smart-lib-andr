@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition;
+  }
+
+  .card {
+    @apply bg-white p-6 rounded-lg shadow-md;
+  }
+
+  .card-hover {
+    @apply bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition;
+  }
+}
