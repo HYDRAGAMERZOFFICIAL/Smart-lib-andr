@@ -12,10 +12,11 @@ export default defineConfig({
     react(),
   ],
   server: {
-    host: 'Smart-lib-web.test',
-    origin: 'http://Smart-lib-web.test:5173',
+    host: '127.0.0.1',
+    port: 5173,
+    strictPort: false,
     hmr: {
-      host: 'Smart-lib-web.test',
+      host: 'localhost',
       port: 5173,
     },
   },
