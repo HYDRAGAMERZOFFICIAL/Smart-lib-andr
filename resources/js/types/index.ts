@@ -1,114 +1,51 @@
 export interface User {
   id: number;
-  idNumber: string;
+  id_number: string;
   name: string;
   email: string;
   phone: string;
   department: string;
   semester: string;
-  profileImage?: string;
-  isApproved: boolean;
-  createdAt: string;
-  updatedAt: string;
+  profile_image?: string;
+  is_approved: boolean;
 }
 
 export interface Book {
   id: number;
-  isbn: string;
   title: string;
   author: string;
+  isbn: string;
   publisher: string;
   edition: string;
   category: string;
   description: string;
-  coverImage?: string;
-  totalCopies: number;
-  availableCopies: number;
+  total_copies: number;
+  available_copies: number;
   language: string;
-  publicationYear: number;
+  publication_year: number;
   barcode: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface IssuedBook {
   id: number;
-  userId: number;
-  bookId: number;
-  issuedDate: string;
-  dueDate: string;
-  returnedDate?: string;
-  status: 'issued' | 'returned';
+  user_id: number;
+  book_id: number;
+  book?: Book;
+  issued_date: string;
+  due_date: string;
+  returned_date?: string;
+  status: 'issued' | 'returned' | 'overdue';
   fine?: number;
-  createdAt: string;
-  updatedAt: string;
 }
 
-export interface LibraryCard {
-  id: number;
-  userId: number;
-  cardNumber: string;
-  barcode: string;
-  qrCode: string;
-  issueDate: string;
-  expiryDate: string;
-  status: 'active' | 'inactive' | 'expired';
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface AcademicCalendar {
-  id: number;
-  title: string;
-  description?: string;
-  startDate: string;
-  endDate: string;
-  eventType: 'holiday' | 'exam' | 'closed' | 'announcement';
-  location?: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface Notification {
-  id: number;
-  userId: number;
-  title: string;
-  body: string;
-  type: string;
-  data?: Record<string, any>;
-  isRead: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface AuthResponse {
-  success: boolean;
-  message: string;
-  data?: {
-    token: string;
-    user: User;
+export interface AdminConnection {
+  enabled: boolean;
+  url?: string;
+  lastSync?: string;
+  dataTracking: {
+    studentEnrollment: boolean;
+    bookLoans: boolean;
+    bookReturns: boolean;
+    fines: boolean;
   };
-  errors?: Record<string, string[]>;
-}
-
-export interface ApiError {
-  message: string;
-  status: number;
-  code?: string;
-  errors?: Record<string, string[]>;
-}
-
-export interface LoginPayload {
-  idNumber: string;
-  password: string;
-}
-
-export interface RegisterPayload {
-  fullName: string;
-  idNumber: string;
-  phone: string;
-  department: string;
-  semester: string;
-  password: string;
-  confirmPassword: string;
 }

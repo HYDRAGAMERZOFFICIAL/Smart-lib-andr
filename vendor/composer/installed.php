@@ -3,7 +3,7 @@
         'name' => 'smart-lib/smart-lib-web',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '1b4954d1685c6fa03635ebc6ca84c7f1054ea048',
+        'reference' => '6196824e98f3cf0a19d6f36a1800eeb7954b4054',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -369,6 +369,15 @@
             'replaced' => array(
                 0 => 'v11.47.0',
             ),
+        ),
+        'inertiajs/inertia-laravel' => array(
+            'pretty_version' => 'v2.0.11',
+            'version' => '2.0.11.0',
+            'reference' => '041e148b3228407b5abe584a4f02df2651ab4d85',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../inertiajs/inertia-laravel',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'kodova/hamcrest-php' => array(
             'dev_requirement' => true,
@@ -977,7 +986,7 @@
         'smart-lib/smart-lib-web' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '1b4954d1685c6fa03635ebc6ca84c7f1054ea048',
+            'reference' => '6196824e98f3cf0a19d6f36a1800eeb7954b4054',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

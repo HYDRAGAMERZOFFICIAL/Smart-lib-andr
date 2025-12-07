@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AdminConnectionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BooksController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LoansController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -20,7 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/books', [BooksController::class, 'index'])->name('books.index');
     Route::get('/books/{book}', [BooksController::class, 'show'])->name('books.show');
     
-    Route::get('/loans', fn() => inertia('Loans'))->name('loans');
+    Route::get('/loans', [LoansController::class, 'index'])->name('loans');
     Route::get('/card', fn() => inertia('Card'))->name('card');
     Route::get('/calendar', fn() => inertia('Calendar'))->name('calendar');
     Route::get('/notifications', fn() => inertia('Notifications'))->name('notifications');
@@ -28,6 +30,16 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile', function () {
         return back()->with('message', 'Profile updated successfully');
     })->name('profile.update');
+});
+
+Route::get('/admin-connection', [AdminConnectionController::class, 'status'])->name('admin.connection');
+
+Route::get('/api/student/data', [AdminConnectionController::class, 'studentData'])->name('api.student.data');
+
+Route::middleware('admin.api')->group(function () {
+    Route::get('/api/admin/students', [AdminConnectionController::class, 'allStudentsData']);
+    Route::get('/api/admin/approvals/pending', [AdminConnectionController::class, 'pendingApprovals']);
+    Route::get('/api/admin/student/{id}/loans', [AdminConnectionController::class, 'studentLoans']);
 });
 
 Route::redirect('/', '/dashboard');
