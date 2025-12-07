@@ -28,15 +28,15 @@ export default function Register() {
 
             <div className="mb-6 text-center">
                 <div className="flex justify-center mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z" />
+                            <path d="M18 9v3m0 0v3m0-3h3m0 0h3m0 0h-3m0-3h-3m-2-1a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                         </svg>
                     </div>
                 </div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-cyan-600 bg-clip-text text-transparent">Smart Library</h1>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Smart Library</h1>
                 <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                    Create an account to access the library management system
+                    Join us! Create your account to explore thousands of books
                 </p>
             </div>
 
@@ -49,7 +49,7 @@ export default function Register() {
                             id="name"
                             name="name"
                             value={data.name}
-                            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                             placeholder="John Doe"
                             autoComplete="name"
                             isFocused={true}
@@ -70,7 +70,7 @@ export default function Register() {
                             type="email"
                             name="email"
                             value={data.email}
-                            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                             placeholder="your@email.com"
                             autoComplete="username"
                             onChange={(e) => setData('email', e.target.value)}
@@ -87,7 +87,7 @@ export default function Register() {
                             type="text"
                             name="mobile"
                             value={data.mobile}
-                            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                             placeholder="6361232232"
                             autoComplete="tel"
                             onChange={(e) => {
@@ -109,7 +109,7 @@ export default function Register() {
                             type="password"
                             name="password"
                             value={data.password}
-                            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                             placeholder="••••••••"
                             autoComplete="new-password"
                             onChange={(e) => setData('password', e.target.value)}
@@ -142,7 +142,7 @@ export default function Register() {
                             type="password"
                             name="password_confirmation"
                             value={data.password_confirmation}
-                            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                             placeholder="••••••••"
                             autoComplete="new-password"
                             onChange={(e) =>
@@ -170,7 +170,7 @@ export default function Register() {
                     Already have an account?{' '}
                     <Link
                         href={route('login')}
-                        className="font-medium text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300"
+                        className="font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300"
                     >
                         Sign in
                     </Link>
@@ -180,9 +180,9 @@ export default function Register() {
             <div className="mt-6 border-t border-gray-200 pt-6 dark:border-gray-700">
                 <p className="text-xs text-center text-gray-500 dark:text-gray-400">
                     By creating an account, you agree to our{' '}
-                    <a href="#" className="text-green-600 hover:underline dark:text-green-400">Terms of Service</a>{' '}
+                    <a href="#" className="text-indigo-600 hover:underline dark:text-indigo-400">Terms of Service</a>{' '}
                     and{' '}
-                    <a href="#" className="text-green-600 hover:underline dark:text-green-400">Privacy Policy</a>.
+                    <a href="#" className="text-indigo-600 hover:underline dark:text-indigo-400">Privacy Policy</a>.
                 </p>
             </div>
         </GuestLayout>

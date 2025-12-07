@@ -11,9 +11,19 @@ class LoanController extends Controller
     public function index(Request $request)
     {
         $user = auth()->user();
+        $student = Student::where('email', $user->email)->first();
+
+        if (!$student) {
+            return Inertia::render('Loans/Index', [
+                'loans' => [],
+                'dueSoonCount' => 0,
+                'overdueCount' => 0,
+                'filters' => ['status' => $request->status]
+            ]);
+        }
 
         $loansQuery = Loan::query()
-            ->where('user_id', $user->id)
+            ->where('student_id', $student->id)
             ->with(['student', 'bookCopy.book']);
 
         if ($request->status) {
@@ -22,12 +32,12 @@ class LoanController extends Controller
 
         $loans = $loansQuery->latest()->paginate(25)->withQueryString();
 
-        $dueSoonCount = Loan::where('user_id', $user->id)
+        $dueSoonCount = Loan::where('student_id', $student->id)
             ->where('status', 'active')
             ->whereBetween('due_date', [now(), now()->addDays(3)])
             ->count();
 
-        $overdueCount = Loan::where('user_id', $user->id)
+        $overdueCount = Loan::where('student_id', $student->id)
             ->where('status', 'active')
             ->where('due_date', '<', now())
             ->count();
@@ -45,8 +55,13 @@ class LoanController extends Controller
     public function history()
     {
         $user = auth()->user();
+        $student = Student::where('email', $user->email)->first();
 
-        $loans = Loan::where('user_id', $user->id)
+        if (!$student) {
+            return Inertia::render('Loans/History', ['loans' => []]);
+        }
+
+        $loans = Loan::where('student_id', $student->id)
             ->where('status', 'returned')
             ->with(['student', 'bookCopy.book'])
             ->latest('returned_date')
