@@ -8,9 +8,27 @@ use Inertia\Inertia;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::all()->map(function ($book) {
+        $query = Book::query();
+
+        if ($request->has('category') && $request->category) {
+            $query->where('category', $request->category);
+        }
+
+        if ($request->has('course') && $request->course) {
+            $query->where('course', $request->course);
+        }
+
+        if ($request->has('semester') && $request->semester) {
+            $query->where('semester', $request->semester);
+        }
+
+        if ($request->has('available_only') && $request->available_only) {
+            $query->where('available_copies', '>', 0);
+        }
+
+        $books = $query->paginate(20)->map(function ($book) {
             return [
                 'id' => $book->id,
                 'title' => $book->title,
@@ -35,82 +53,11 @@ class BookController extends Controller
 
     public function show(Book $book)
     {
-        $copies = $book->copies()
-            ->get()
-            ->map(function ($copy) {
-                return [
-                    'id' => $copy->id,
-                    'copy_code' => $copy->copy_code,
-                    'barcode' => $copy->barcode,
-                    'status' => $copy->status
-                ];
-            });
-
         return Inertia::render('Books/Show', [
             'book' => $book,
-            'copies' => $copies
+            'available_copies' => $book->available_copies,
+            'total_copies' => $book->total_copies
         ]);
-    }
-
-    public function create()
-    {
-        return Inertia::render('Books/Create');
-    }
-
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string',
-            'author' => 'required|string',
-            'edition' => 'nullable|string',
-            'publisher' => 'nullable|string',
-            'isbn' => 'nullable|unique:books',
-            'category' => 'required|string',
-            'rack' => 'nullable|string',
-            'shelf' => 'nullable|string',
-            'course' => 'nullable|string',
-            'semester' => 'nullable|string',
-            'description' => 'nullable|string'
-        ]);
-
-        $book = Book::create($validated);
-
-        return redirect()->route('books.show', $book)->with('success', 'Book created successfully');
-    }
-
-    public function edit(Book $book)
-    {
-        return Inertia::render('Books/Edit', [
-            'book' => $book
-        ]);
-    }
-
-    public function update(Book $book, Request $request)
-    {
-        $validated = $request->validate([
-            'title' => 'string',
-            'author' => 'string',
-            'edition' => 'nullable|string',
-            'publisher' => 'nullable|string',
-            'isbn' => 'nullable|unique:books,isbn,' . $book->id,
-            'category' => 'string',
-            'rack' => 'nullable|string',
-            'shelf' => 'nullable|string',
-            'course' => 'nullable|string',
-            'semester' => 'nullable|string',
-            'description' => 'nullable|string'
-        ]);
-
-        $book->update($validated);
-
-        return back()->with('success', 'Book updated successfully');
-    }
-
-    public function destroy(Book $book)
-    {
-        $book->delete();
-
-        return back()->with('success', 'Book deleted successfully');
     }
 
     public function search(Request $request)
@@ -124,5 +71,26 @@ class BookController extends Controller
             ->get();
 
         return response()->json($books);
+    }
+
+    public function scanBarcode(Request $request)
+    {
+        $barcode = $request->input('barcode');
+
+        $book = Book::where('barcode', $barcode)->first();
+
+        if (!$book) {
+            return response()->json(['error' => 'Book not found'], 404);
+        }
+
+        return response()->json([
+            'id' => $book->id,
+            'title' => $book->title,
+            'author' => $book->author,
+            'isbn' => $book->isbn,
+            'publisher' => $book->publisher,
+            'available_copies' => $book->available_copies,
+            'total_copies' => $book->total_copies
+        ]);
     }
 }

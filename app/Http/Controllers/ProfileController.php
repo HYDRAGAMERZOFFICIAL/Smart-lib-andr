@@ -23,14 +23,11 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $user instanceof MustVerifyEmail,
             'status' => session('status'),
-            // Explicitly set errors to an empty object to override any session errors
             'errors' => (object) [],
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'role' => $user->role,
-                'two_factor_enabled' => $user->two_factor_enabled,
             ],
         ]);
     }

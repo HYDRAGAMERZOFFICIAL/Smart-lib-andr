@@ -25,12 +25,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'mobile',
         'photo',
         'password',
-        'role',
         'is_approved',
         'email_verified_at',
-        'two_factor_enabled',
-        'two_factor_secret',
-        'two_factor_recovery_codes',
     ];
 
     /**
@@ -41,8 +37,6 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password',
         'remember_token',
-        'two_factor_secret',
-        'two_factor_recovery_codes',
     ];
 
     /**
@@ -53,8 +47,6 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'two_factor_enabled' => 'boolean',
-        'two_factor_recovery_codes' => 'array',
     ];
 
     // public function categories()
@@ -77,16 +69,6 @@ class User extends Authenticatable implements MustVerifyEmail
     //     return $this->hasMany(Goal::class);
     // }
 
-    public function issuedLoans()
-    {
-        return $this->hasMany(Loan::class, 'issued_by_id');
-    }
-
-    public function returnedLoans()
-    {
-        return $this->hasMany(Loan::class, 'returned_by_id');
-    }
-    
     /**
      * Send the email verification notification.
      *
@@ -95,15 +77,5 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification()
     {
         $this->notify(new CustomVerifyEmail);
-    }
-    
-    /**
-     * Check if the user is an admin.
-     *
-     * @return bool
-     */
-    public function isAdmin()
-    {
-        return $this->role === 'admin';
     }
 }
