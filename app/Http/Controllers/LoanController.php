@@ -33,6 +33,19 @@ class LoanController extends Controller
 
         $loans = $loansQuery->latest()->paginate(25)->withQueryString();
 
+        $loans->getCollection()->transform(function ($loan) {
+            return [
+                'id' => $loan->id,
+                'student_name' => $loan->student->name,
+                'book_title' => $loan->bookCopy->book->title,
+                'issued_date' => $loan->issued_date,
+                'due_date' => $loan->due_date,
+                'status' => $loan->status,
+                'fine' => $loan->fine ?? 0,
+                'book_copy' => $loan->bookCopy,
+            ];
+        });
+
         $dueSoonCount = Loan::where('student_id', $student->id)
             ->where('status', 'active')
             ->whereBetween('due_date', [now(), now()->addDays(3)])
@@ -67,6 +80,17 @@ class LoanController extends Controller
             ->with(['student', 'bookCopy.book'])
             ->latest('returned_date')
             ->paginate(25);
+
+        $loans->getCollection()->transform(function ($loan) {
+            return [
+                'id' => $loan->id,
+                'student_name' => $loan->student->name,
+                'book_copy' => $loan->bookCopy,
+                'issued_date' => $loan->issued_date,
+                'returned_date' => $loan->returned_date,
+                'status' => $loan->status,
+            ];
+        });
 
         return Inertia::render('Loans/History', ['loans' => $loans]);
     }

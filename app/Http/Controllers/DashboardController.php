@@ -16,56 +16,24 @@ class DashboardController extends Controller
         $user = Auth::user();
         $student = Student::where('email', $user->email)->first();
 
-        if (!$student) {
-            return inertia('Dashboard', [
-                'user' => ['name' => $user->name, 'email' => $user->email],
-                'activeLoans' => [],
-                'activeLoanCount' => 0,
-                'dueSoonCount' => 0,
-                'overdueCount' => 0,
-                'suggestedBooks' => [],
-                'announcements' => [],
-            ]);
+        if ($student) {
+            return redirect()->route('student.dashboard');
         }
 
-        $activeLoans = Loan::where('student_id', $student->id)
-            ->where('status', 'active')
-            ->with(['bookCopy.book'])
-            ->latest()
-            ->get();
-
-        $dueSoonCount = Loan::where('student_id', $student->id)
-            ->where('status', 'active')
-            ->whereBetween('due_date', [now(), now()->addDays(3)])
-            ->count();
-
-        $overdueCount = Loan::where('student_id', $student->id)
-            ->where('status', 'active')
-            ->where('due_date', '<', now())
-            ->count();
-
-        $suggestedBooks = Book::where('available_copies', '>', 0)
-            ->where('course', $student->course)
-            ->limit(6)
-            ->get();
-
-        $announcements = Notification::forStudent($student->id)
-            ->where('type', 'announcement')
-            ->orderBy('created_at', 'desc')
-            ->limit(5)
-            ->get();
-
         return inertia('Dashboard', [
-            'user' => [
-                'name' => $user->name,
-                'email' => $user->email,
-            ],
-            'activeLoans' => $activeLoans,
-            'activeLoanCount' => $activeLoans->count(),
-            'dueSoonCount' => $dueSoonCount,
-            'overdueCount' => $overdueCount,
-            'suggestedBooks' => $suggestedBooks,
-            'announcements' => $announcements,
+            'totalStudents' => Student::count(),
+            'pendingApprovals' => Student::where('status', 'pending')->count(),
+            'totalBooks' => Book::count(),
+            'totalBookCopies' => 0,
+            'booksIssuedToday' => 0,
+            'dueSoon' => 0,
+            'overdue' => Loan::where('status', 'active')->where('due_date', '<', now())->count(),
+            'totalStaff' => 0,
+            'fineCollected' => 0,
+            'dailyIssuanceData' => [],
+            'monthlyBorrowingData' => [],
+            'categoryWiseData' => [],
+            'departmentUsageData' => [],
         ]);
     }
 }

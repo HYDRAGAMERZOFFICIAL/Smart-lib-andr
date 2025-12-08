@@ -55,28 +55,24 @@ export default function Dashboard({
                             icon="👥"
                             label="Total Students"
                             value={totalStudents}
-                            link={route('students.index')}
                             bgColor="bg-green-600"
                         />
                         <StatCard
                             icon="⏳"
                             label="Pending Approvals"
                             value={pendingApprovals}
-                            link={pendingApprovals > 0 ? route('students.index') : null}
                             bgColor="bg-cyan-600"
                         />
                         <StatCard
                             icon="📚"
                             label="Total Books"
                             value={totalBooks}
-                            link={route('books.index')}
                             bgColor="bg-emerald-600"
                         />
                         <StatCard
                             icon="📖"
                             label="Book Copies"
                             value={totalBookCopies}
-                            link={route('book-copies.index')}
                             bgColor="bg-teal-600"
                         />
                     </div>
@@ -87,21 +83,18 @@ export default function Dashboard({
                             icon="📤"
                             label="Issued Today"
                             value={booksIssuedToday}
-                            link={route('issue-return.index')}
                             bgColor="bg-green-500"
                         />
                         <StatCard
                             icon="⚠️"
                             label="Due Soon"
                             value={dueSoon}
-                            link={route('loans.due-soon')}
                             bgColor="bg-cyan-500"
                         />
                         <StatCard
                             icon="🔴"
                             label="Overdue"
                             value={overdue}
-                            link={route('loans.overdue')}
                             bgColor="bg-red-500"
                         />
                         <StatCard
@@ -203,44 +196,10 @@ export default function Dashboard({
 
                     {/* Quick Actions */}
                     <div className="mt-8 bg-gradient-to-r from-green-50 to-cyan-50 rounded-lg shadow-md p-6 border border-green-200">
-                        <h3 className="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h3>
-                        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-                            <Link
-                                href={route('students.index')}
-                                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-center font-medium transition"
-                            >
-                                Manage Students
-                            </Link>
-                            <Link
-                                href={route('books.index')}
-                                className="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 text-center font-medium transition"
-                            >
-                                Manage Books
-                            </Link>
-                            <Link
-                                href={route('issue-return.index')}
-                                className="px-4 py-2 bg-cyan-600 text-white rounded-md hover:bg-cyan-700 text-center font-medium transition"
-                            >
-                                Issue/Return Books
-                            </Link>
-                            <Link
-                                href={route('library-cards.index')}
-                                className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 text-center font-medium transition"
-                            >
-                                Library Cards
-                            </Link>
-                            <Link
-                                href={route('loans.index')}
-                                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 text-center font-medium transition"
-                            >
-                                View Loans
-                            </Link>
-                            <Link
-                                href={route('reports.index')}
-                                className="px-4 py-2 bg-cyan-500 text-white rounded-md hover:bg-cyan-600 text-center font-medium transition"
-                            >
-                                View Reports
-                            </Link>
+                        <h3 className="text-lg font-semibold text-gray-800 mb-4">Admin Panel</h3>
+                        <div className="text-center text-gray-600">
+                            <p>Welcome to Smart Library Admin Dashboard</p>
+                            <p className="text-sm mt-2">Admin management features will be available soon</p>
                         </div>
                     </div>
                 </div>

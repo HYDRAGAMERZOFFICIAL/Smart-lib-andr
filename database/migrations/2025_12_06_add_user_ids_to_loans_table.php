@@ -14,8 +14,8 @@ return new class extends Migration {
 
     public function down(): void {
         Schema::table('loans', function (Blueprint $table) {
-            $table->dropForeignIdFor('users', 'issued_by_id');
-            $table->dropForeignIdFor('users', 'returned_by_id');
+            $table->dropForeign(['issued_by_id']);
+            $table->dropForeign(['returned_by_id']);
             $table->dropColumn(['issued_by_id', 'returned_by_id']);
         });
     }

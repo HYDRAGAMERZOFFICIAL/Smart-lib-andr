@@ -1,8 +1,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useState, useMemo } from 'react';
 
 export default function BooksIndex({ books = [] }) {
+    const { auth } = usePage().props;
+    const isAdmin = auth?.user?.role === 'admin';
     const [searchTerm, setSearchTerm] = useState('');
     const [filterCategory, setFilterCategory] = useState('all');
     const [sortBy, setSortBy] = useState('title');
@@ -100,14 +102,16 @@ export default function BooksIndex({ books = [] }) {
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     {/* Action Button */}
-                    <div className="mb-6 flex gap-3">
-                        <button
-                            onClick={() => setShowCreateModal(true)}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium"
-                        >
-                            Add New Book
-                        </button>
-                    </div>
+                    {isAdmin && (
+                        <div className="mb-6 flex gap-3">
+                            <button
+                                onClick={() => setShowCreateModal(true)}
+                                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium"
+                            >
+                                Add New Book
+                            </button>
+                        </div>
+                    )}
 
                     {/* Create Modal */}
                     {showCreateModal && (
@@ -283,18 +287,22 @@ export default function BooksIndex({ books = [] }) {
                                         >
                                             View
                                         </Link>
-                                        <Link
-                                            href={route('books.edit', book.id)}
-                                            className="flex-1 px-3 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 text-center text-xs font-medium"
-                                        >
-                                            Edit
-                                        </Link>
-                                        <button
-                                            onClick={() => handleDeleteBook(book.id)}
-                                            className="flex-1 px-3 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-xs font-medium"
-                                        >
-                                            Delete
-                                        </button>
+                                        {isAdmin && (
+                                            <>
+                                                <Link
+                                                    href={route('books.edit', book.id)}
+                                                    className="flex-1 px-3 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 text-center text-xs font-medium"
+                                                >
+                                                    Edit
+                                                </Link>
+                                                <button
+                                                    onClick={() => handleDeleteBook(book.id)}
+                                                    className="flex-1 px-3 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-xs font-medium"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
                             ))

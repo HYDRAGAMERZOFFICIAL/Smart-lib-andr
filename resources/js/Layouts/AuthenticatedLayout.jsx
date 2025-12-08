@@ -50,40 +50,72 @@ export default function AuthenticatedLayout({ header, children }) {
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
                                     href={route('dashboard')}
-                                    active={route().current('dashboard')}
+                                    active={route().current('dashboard') || route().current('student.dashboard')}
                                 >
                                     Dashboard
                                 </NavLink>
-                                <NavLink
-                                    href={route('students.index')}
-                                    active={route().current('students.*')}
-                                >
-                                    Students
-                                </NavLink>
-                                <NavLink
-                                    href={route('books.index')}
-                                    active={route().current('books.*')}
-                                >
-                                    Books
-                                </NavLink>
-                                <NavLink
-                                    href={route('issue-return.index')}
-                                    active={route().current('issue-return.*')}
-                                >
-                                    Issue/Return
-                                </NavLink>
-                                <NavLink
-                                    href={route('loans.index')}
-                                    active={route().current('loans.*')}
-                                >
-                                    Loans
-                                </NavLink>
-                                <NavLink
-                                    href={route('reports.index')}
-                                    active={route().current('reports.*')}
-                                >
-                                    Reports
-                                </NavLink>
+                                {user.role === 'admin' && (
+                                    <>
+                                        <NavLink
+                                            href={route('students.index')}
+                                            active={route().current('students.*')}
+                                        >
+                                            Students
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('books.index')}
+                                            active={route().current('books.*')}
+                                        >
+                                            Books
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('issue-return.index')}
+                                            active={route().current('issue-return.*')}
+                                        >
+                                            Issue/Return
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('loans.index')}
+                                            active={route().current('loans.*')}
+                                        >
+                                            Loans
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('reports.index')}
+                                            active={route().current('reports.*')}
+                                        >
+                                            Reports
+                                        </NavLink>
+                                    </>
+                                )}
+                                {user.role !== 'admin' && (
+                                    <>
+                                        <NavLink
+                                            href={route('books.index')}
+                                            active={route().current('books.*')}
+                                        >
+                                            Books
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('loans.index')}
+                                            active={route().current('loans.*')}
+                                        >
+                                            Loans
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('fines.index')}
+                                            active={route().current('fines.*')}
+                                        >
+                                            Fines
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('notifications.index')}
+                                            active={route().current('notifications.*')}
+                                        >
+                                            Notifications
+                                        </NavLink>
+                                    </>
+                                )}
                             </div>
                         </div>
 
@@ -196,40 +228,72 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div className="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
                             href={route('dashboard')}
-                            active={route().current('dashboard')}
+                            active={route().current('dashboard') || route().current('student.dashboard')}
                         >
                             Dashboard
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('students.index')}
-                            active={route().current('students.*')}
-                        >
-                            Students
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('books.index')}
-                            active={route().current('books.*')}
-                        >
-                            Books
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('issue-return.index')}
-                            active={route().current('issue-return.*')}
-                        >
-                            Issue/Return
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('loans.index')}
-                            active={route().current('loans.*')}
-                        >
-                            Loans
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('reports.index')}
-                            active={route().current('reports.*')}
-                        >
-                            Reports
-                        </ResponsiveNavLink>
+                        {user.role === 'admin' && (
+                            <>
+                                <ResponsiveNavLink
+                                    href={route('students.index')}
+                                    active={route().current('students.*')}
+                                >
+                                    Students
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route('books.index')}
+                                    active={route().current('books.*')}
+                                >
+                                    Books
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route('issue-return.index')}
+                                    active={route().current('issue-return.*')}
+                                >
+                                    Issue/Return
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route('loans.index')}
+                                    active={route().current('loans.*')}
+                                >
+                                    Loans
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route('reports.index')}
+                                    active={route().current('reports.*')}
+                                >
+                                    Reports
+                                </ResponsiveNavLink>
+                            </>
+                        )}
+                        {user.role !== 'admin' && (
+                            <>
+                                <ResponsiveNavLink
+                                    href={route('books.index')}
+                                    active={route().current('books.*')}
+                                >
+                                    Books
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route('loans.index')}
+                                    active={route().current('loans.*')}
+                                >
+                                    Loans
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route('fines.index')}
+                                    active={route().current('fines.*')}
+                                >
+                                    Fines
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route('notifications.index')}
+                                    active={route().current('notifications.*')}
+                                >
+                                    Notifications
+                                </ResponsiveNavLink>
+                            </>
+                        )}
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">

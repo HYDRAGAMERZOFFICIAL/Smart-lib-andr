@@ -158,21 +158,8 @@ export default function ReportsIndex() {
 
                     {/* Quick Links */}
                     <div className="mt-8 bg-blue-50 rounded-lg border border-blue-200 p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Reports</h3>
-                        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                            <Link
-                                href={route('loans.due-soon')}
-                                className="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 text-center font-medium"
-                            >
-                                Books Due Soon
-                            </Link>
-                            <Link
-                                href={route('loans.overdue')}
-                                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-center font-medium"
-                            >
-                                Overdue Books
-                            </Link>
-                        </div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Library Statistics</h3>
+                        <p className="text-gray-600">View detailed analytics and reports in the charts above.</p>
                     </div>
 
                     {/* Report Examples */}

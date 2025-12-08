@@ -107,16 +107,10 @@ export default function LoansIndex({ loans = [], dueSoonCount = 0, overdueCount 
                         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
                             <p className="text-sm font-medium text-yellow-700">Due Soon (3 days)</p>
                             <p className="text-3xl font-bold text-yellow-900 mt-2">{dueSoonCount}</p>
-                            <Link href={route('loans.due-soon')} className="text-xs text-yellow-600 hover:underline mt-2 inline-block">
-                                View Details →
-                            </Link>
                         </div>
                         <div className="bg-red-50 border border-red-200 rounded-lg p-6">
                             <p className="text-sm font-medium text-red-700">Overdue</p>
                             <p className="text-3xl font-bold text-red-900 mt-2">{overdueCount}</p>
-                            <Link href={route('loans.overdue')} className="text-xs text-red-600 hover:underline mt-2 inline-block">
-                                View Details →
-                            </Link>
                         </div>
                     </div>
 
