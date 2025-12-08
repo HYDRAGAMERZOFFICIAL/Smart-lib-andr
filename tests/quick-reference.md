@@ -43,7 +43,7 @@ php artisan test --group transactions
 
 ```bash
 # Create the test database
-mysql -u root -e "CREATE DATABASE finance_testing;"
+mysql -u root -e "CREATE DATABASE SMART LIBRARY_testing;"
 
 # Generate application key for testing
 php artisan key:generate --env=testing
@@ -314,7 +314,7 @@ If tests are failing due to database issues:
 
 1. Ensure the test database exists:
    ```bash
-   mysql -u root -e "CREATE DATABASE finance_testing;"
+   mysql -u root -e "CREATE DATABASE SMART LIBRARY_testing;"
    ```
 
 2. Check database configuration in `.env.testing` and `phpunit.xml`.

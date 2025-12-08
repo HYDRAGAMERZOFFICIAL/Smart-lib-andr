@@ -4,7 +4,7 @@ import { Link } from '@inertiajs/react';
 
 export default function GuestLayout({ children }) {
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-indigo-950 p-4 sm:p-6 md:p-8">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-emerald-50 via-green-50 to-teal-100 dark:from-gray-900 dark:via-emerald-950 dark:to-teal-950 p-4 sm:p-6 md:p-8">
             <Toast />
             <div className="w-full max-w-md">
                 <div className="mb-8 flex justify-center">
@@ -20,7 +20,7 @@ export default function GuestLayout({ children }) {
                 </div>
 
                 <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-                    <p>© {new Date().getFullYear()} PERA FIN CORE Finance. All rights reserved.</p>
+                    <p>© {new Date().getFullYear()} Smart Library System. All rights reserved.</p>
                 </div>
             </div>
         </div>

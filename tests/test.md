@@ -54,7 +54,7 @@ PERAFINCORE uses a separate database for testing to ensure that your development
 
 1. Create a test database:
    ```sql
-   CREATE DATABASE finance_testing;
+   CREATE DATABASE SMART LIBRARY_testing;
    ```
 
 2. Configure the `.env.testing` file:
@@ -63,7 +63,7 @@ PERAFINCORE uses a separate database for testing to ensure that your development
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
    DB_PORT=3306
-   DB_DATABASE=finance_testing
+   DB_DATABASE=SMART LIBRARY_testing
    DB_USERNAME=root
    DB_PASSWORD=
    ```
@@ -73,7 +73,7 @@ PERAFINCORE uses a separate database for testing to ensure that your development
    <php>
        <env name="APP_ENV" value="testing"/>
        <env name="DB_CONNECTION" value="mysql"/>
-       <env name="DB_DATABASE" value="finance_testing"/>
+       <env name="DB_DATABASE" value="SMART LIBRARY_testing"/>
        <!-- Other environment variables -->
    </php>
    ```
@@ -297,7 +297,7 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: finance_testing
+          MYSQL_DATABASE: SMART LIBRARY_testing
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3

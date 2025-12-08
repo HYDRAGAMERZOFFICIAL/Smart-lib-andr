@@ -25,22 +25,22 @@ export default function Login({ status, canResetPassword }) {
         <GuestLayout>
             <Head title="Log in" />
 
-            <div className="mb-6 text-center">
+            <div className="mb-8 text-center">
                 <div className="flex justify-center mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                    <div className="w-16 h-16 bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M4 6h16V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19-2h-6v6h6V4zm-1 5h-4V5h4v4zM4 12h4v-2H4v2zm10-6h-6v2h6V6z" />
                         </svg>
                     </div>
                 </div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Smart Library</h1>
-                <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                    Welcome back! Sign in to access your books and loans
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Smart Library System</h1>
+                <p className="mt-2 text-base text-gray-600 dark:text-gray-400">
+                    Sign in to manage your books, loans, and fines
                 </p>
             </div>
 
             {status && (
-                <div className="mb-4 rounded-lg bg-indigo-50 p-4 text-sm font-medium text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400">
+                <div className="mb-4 rounded-lg bg-green-50 p-4 text-sm font-medium text-green-800 dark:bg-green-900/50 dark:text-green-200 border border-green-200 dark:border-green-700">
                     <div className="flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -53,14 +53,14 @@ export default function Login({ status, canResetPassword }) {
             <form onSubmit={submit}>
                 <div className="space-y-5">
                     <div>
-                        <InputLabel htmlFor="email" value="Email Address" className="text-gray-700 dark:text-gray-300" />
+                        <InputLabel htmlFor="email" value="Email Address" className="text-gray-700 dark:text-gray-300 font-semibold" />
 
                         <TextInput
                             id="email"
                             type="email"
                             name="email"
                             value={data.email}
-                            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                            className="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                             placeholder="your@email.com"
                             autoComplete="username"
                             isFocused={true}
@@ -72,12 +72,12 @@ export default function Login({ status, canResetPassword }) {
 
                     <div>
                         <div className="flex items-center justify-between">
-                            <InputLabel htmlFor="password" value="Password" className="text-gray-700 dark:text-gray-300" />
+                            <InputLabel htmlFor="password" value="Password" className="text-gray-700 dark:text-gray-300 font-semibold" />
 
                             {canResetPassword && (
                                 <Link
                                     href={route('password.request')}
-                                    className="text-xs text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300"
+                                    className="text-xs text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300"
                                 >
                                     Forgot password?
                                 </Link>
@@ -89,7 +89,7 @@ export default function Login({ status, canResetPassword }) {
                             type="password"
                             name="password"
                             value={data.password}
-                            className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                            className="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                             placeholder="••••••••"
                             autoComplete="current-password"
                             onChange={(e) => setData('password', e.target.value)}
@@ -120,14 +120,14 @@ export default function Login({ status, canResetPassword }) {
                 </div>
             </form>
 
-            <div className="mt-6 text-center">
+            <div className="mt-8 text-center">
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                     Don't have an account?{' '}
                     <Link
                         href={route('register')}
-                        className="font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300"
+                        className="font-semibold text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 transition"
                     >
-                        Sign up
+                        Create one now
                     </Link>
                 </p>
             </div>

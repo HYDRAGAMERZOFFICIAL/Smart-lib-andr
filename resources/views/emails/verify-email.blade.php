@@ -63,11 +63,11 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>PERA FIN CORE</h1>
+            <h1>SMART LIBRARY</h1>
         </div>
         <div class="content">
             <h2>Hello {{ $user->name }},</h2>
-            <p>Thank you for registering with PERA FIN CORE. Please verify your email address to complete your registration and access all features of our financial management platform.</p>
+            <p>Thank you for registering with SMART LIBRARY. Please verify your email address to complete your registration and access all features of our financial management platform.</p>
             
             <div style="text-align: center;">
                 <a href="{{ $url }}" class="button">Verify Email Address</a>
@@ -83,8 +83,8 @@
             </div>
         </div>
         <div class="footer">
-            <p>&copy; {{ date('Y') }} PERA FIN CORE. All rights reserved.</p>
-            <p>Your personal finance management solution</p>
+            <p>&copy; {{ date('Y') }} SMART LIBRARY. All rights reserved.</p>
+            <p>Your SMART LIBRARY management solution</p>
         </div>
     </div>
 </body>

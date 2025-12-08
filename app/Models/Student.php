@@ -2,19 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class Student extends Model
+class Student extends Authenticatable
 {
-    use HasFactory, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     protected $fillable = [
         'id_number',
         'name',
         'email',
         'phone',
+        'password',
+        'remember_token',
         'department',
         'course',
         'semester',
@@ -30,17 +34,18 @@ class Student extends Model
         'rejection_reason'
     ];
 
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
     protected $casts = [
         'approved_at' => 'datetime',
         'rejected_at' => 'datetime',
         'blocked_at' => 'datetime',
         'date_of_birth' => 'date',
+        'password' => 'hashed',
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'email', 'email');
-    }
 
     public function createdBy()
     {
