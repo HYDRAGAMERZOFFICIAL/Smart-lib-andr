@@ -68,4 +68,14 @@ class LibraryCard extends Model
 
         return self::generateForStudent($this->student_id, $issuedBy);
     }
+
+    public function scopeForStudent($query, $studentId)
+    {
+        return $query->where('student_id', $studentId);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
 }

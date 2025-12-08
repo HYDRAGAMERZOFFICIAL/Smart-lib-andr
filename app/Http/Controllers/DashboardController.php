@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Loan;
+use App\Models\Student;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,29 +14,42 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
+        $student = Student::where('email', $user->email)->first();
 
-        $activeLoans = Loan::where('user_id', $user->id)
+        if (!$student) {
+            return inertia('Dashboard', [
+                'user' => ['name' => $user->name, 'email' => $user->email],
+                'activeLoans' => [],
+                'activeLoanCount' => 0,
+                'dueSoonCount' => 0,
+                'overdueCount' => 0,
+                'suggestedBooks' => [],
+                'announcements' => [],
+            ]);
+        }
+
+        $activeLoans = Loan::where('student_id', $student->id)
             ->where('status', 'active')
             ->with(['bookCopy.book'])
             ->latest()
             ->get();
 
-        $dueSoonCount = Loan::where('user_id', $user->id)
+        $dueSoonCount = Loan::where('student_id', $student->id)
             ->where('status', 'active')
             ->whereBetween('due_date', [now(), now()->addDays(3)])
             ->count();
 
-        $overdueCount = Loan::where('user_id', $user->id)
+        $overdueCount = Loan::where('student_id', $student->id)
             ->where('status', 'active')
             ->where('due_date', '<', now())
             ->count();
 
         $suggestedBooks = Book::where('available_copies', '>', 0)
-            ->where('course', $user->student?->course)
+            ->where('course', $student->course)
             ->limit(6)
             ->get();
 
-        $announcements = Notification::where('user_id', $user->id)
+        $announcements = Notification::forStudent($student->id)
             ->where('type', 'announcement')
             ->orderBy('created_at', 'desc')
             ->limit(5)

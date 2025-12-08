@@ -53,4 +53,24 @@ class Fine extends Model
 
         return $this;
     }
+
+    public function scopeForStudent($query, $studentId)
+    {
+        return $query->where('student_id', $studentId);
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('status', 'pending');
+    }
+
+    public function scopePaid($query)
+    {
+        return $query->where('status', 'paid');
+    }
+
+    public function scopeWaived($query)
+    {
+        return $query->where('status', 'waived');
+    }
 }

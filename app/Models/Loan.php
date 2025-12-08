@@ -131,4 +131,25 @@ class Loan extends Model
 
         return $this;
     }
+
+    public function scopeForStudent($query, $studentId)
+    {
+        return $query->where('student_id', $studentId);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
+
+    public function scopeReturned($query)
+    {
+        return $query->where('status', 'returned');
+    }
+
+    public function scopeOverdue($query)
+    {
+        return $query->where('status', 'active')
+            ->where('due_date', '<', now());
+    }
 }

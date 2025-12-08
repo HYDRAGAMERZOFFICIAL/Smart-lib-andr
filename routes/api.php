@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\LibraryCardController;
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\FineController;
 use App\Http\Controllers\AcademicCalendarController;
 use App\Http\Controllers\NotificationController;
 
@@ -26,6 +27,11 @@ Route::middleware('auth:sanctum')->group(function () {
     // Loan Management API (student view only)
     Route::get('loans', [LoanController::class, 'index']);
     Route::get('loans/history', [LoanController::class, 'history']);
+
+    // Fine Management API (student view only)
+    Route::get('fines', [FineController::class, 'index']);
+    Route::get('fines/{fine}', [FineController::class, 'show']);
+    Route::get('fines/history', [FineController::class, 'history']);
 
     // Academic Calendar API (read-only)
     Route::get('academic-calendar', [AcademicCalendarController::class, 'index']);

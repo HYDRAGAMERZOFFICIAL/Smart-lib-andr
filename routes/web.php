@@ -8,8 +8,10 @@ use App\Http\Controllers\BookCopyController;
 use App\Http\Controllers\LibraryCardController;
 use App\Http\Controllers\IssueReturnController;
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\FineController;
 use App\Http\Controllers\AcademicCalendarController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\StudentDashboardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,6 +34,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
+    // Student Dashboard and Profile Routes
+    Route::get('/student/dashboard', [StudentDashboardController::class, 'dashboard'])->name('student.dashboard');
+    Route::get('/student/profile', [StudentDashboardController::class, 'profile'])->name('student.profile');
+    Route::get('/student/profile/edit', [StudentDashboardController::class, 'edit'])->name('student.profile.edit');
+    Route::patch('/student/profile', [StudentDashboardController::class, 'update'])->name('student.profile.update');
+    
     // Library Card Routes
     Route::get('/library-card', [LibraryCardController::class, 'show'])->name('library-card.show');
     Route::post('/library-card/download', [LibraryCardController::class, 'download'])->name('library-card.download');
@@ -47,6 +55,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Loan Management Routes (Student view only)
     Route::get('/loans', [LoanController::class, 'index'])->name('loans.index');
     Route::get('/loans/history', [LoanController::class, 'history'])->name('loans.history');
+    
+    // Fine Management Routes (Student view only)
+    Route::get('/fines', [FineController::class, 'index'])->name('fines.index');
+    Route::get('/fines/{fine}', [FineController::class, 'show'])->name('fines.show');
+    Route::get('/fines/history', [FineController::class, 'history'])->name('fines.history');
     
     // Academic Calendar Routes (read-only)
     Route::get('/academic-calendar', [AcademicCalendarController::class, 'index'])->name('academic-calendar.index');

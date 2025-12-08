@@ -57,4 +57,24 @@ class Notification extends Model
 
         return $this;
     }
+
+    public function scopeForStudent($query, $studentId)
+    {
+        return $query->where('student_id', $studentId);
+    }
+
+    public function scopeUnread($query)
+    {
+        return $query->where('is_read', false);
+    }
+
+    public function scopeRead($query)
+    {
+        return $query->where('is_read', true);
+    }
+
+    public function scopeSent($query)
+    {
+        return $query->where('is_sent', true);
+    }
 }

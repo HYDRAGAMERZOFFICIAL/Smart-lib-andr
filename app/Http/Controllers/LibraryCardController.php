@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LibraryCard;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -11,8 +12,13 @@ class LibraryCardController extends Controller
     public function show()
     {
         $user = auth()->user();
+        $student = Student::where('email', $user->email)->first();
 
-        $card = LibraryCard::where('user_id', $user->id)
+        if (!$student) {
+            return Inertia::render('LibraryCard/NotGenerated');
+        }
+
+        $card = LibraryCard::where('student_id', $student->id)
             ->where('status', 'active')
             ->first();
 
@@ -37,8 +43,13 @@ class LibraryCardController extends Controller
     public function download()
     {
         $user = auth()->user();
+        $student = Student::where('email', $user->email)->first();
 
-        $card = LibraryCard::where('user_id', $user->id)
+        if (!$student) {
+            return back()->with('error', 'Student profile not found');
+        }
+
+        $card = LibraryCard::where('student_id', $student->id)
             ->where('status', 'active')
             ->first();
 
