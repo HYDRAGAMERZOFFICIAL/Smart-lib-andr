@@ -19,7 +19,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::select('id', 'name', 'email', 'role', 'email_verified_at', 'photo', 'mobile', 'created_at')
+        $users = User::select('id', 'name', 'email', 'is_admin', 'is_approved', 'email_verified_at', 'photo', 'mobile', 'created_at')
             ->orderBy('created_at', 'desc')
             ->get();
             
@@ -41,7 +41,7 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'mobile' => 'nullable|string|max:20',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => 'required|in:admin,member',
+            'is_admin' => 'required|boolean',
         ]);
         
         if ($validator->fails()) {
@@ -53,7 +53,8 @@ class UserController extends Controller
             'email' => $request->email,
             'mobile' => $request->mobile,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'is_admin' => $request->boolean('is_admin'),
+            'is_approved' => true,
         ]);
         
         return back()->with('success', 'User created successfully.');
@@ -73,7 +74,8 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $request->id,
             'mobile' => 'nullable|string|max:20',
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
-            'role' => 'required|in:admin,member',
+            'is_admin' => 'required|boolean',
+            'is_approved' => 'required|boolean',
         ]);
         
         if ($validator->fails()) {
@@ -86,7 +88,8 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'mobile' => $request->mobile,
-            'role' => $request->role,
+            'is_admin' => $request->boolean('is_admin'),
+            'is_approved' => $request->boolean('is_approved'),
         ];
         
         if ($request->filled('password')) {
@@ -126,7 +129,7 @@ class UserController extends Controller
     }
     
     /**
-     * Update the user's role.
+     * Update the user's admin status.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
@@ -135,7 +138,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'userId' => 'required|exists:users,id',
-            'role' => 'required|in:admin,member',
+            'is_admin' => 'required|boolean',
         ]);
         
         if ($validator->fails()) {
@@ -143,10 +146,10 @@ class UserController extends Controller
         }
         
         $user = User::findOrFail($request->userId);
-        $user->role = $request->role;
+        $user->is_admin = $request->boolean('is_admin');
         $user->save();
         
-        return back()->with('success', 'User role updated successfully.');
+        return back()->with('success', 'User admin status updated successfully.');
     }
     
     /**
@@ -158,7 +161,7 @@ class UserController extends Controller
     public function impersonate(Request $request)
     {
         // Ensure only admins can impersonate users
-        if (!auth()->user()->isAdmin()) {
+        if (!auth()->user()->is_admin) {
             abort(403, 'Unauthorized action.');
         }
         

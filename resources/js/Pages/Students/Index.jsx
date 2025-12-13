@@ -74,9 +74,14 @@ export default function StudentIndex({ students = [] }) {
     return (
         <AuthenticatedLayout
             header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Student Management
-                </h2>
+                <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                        Student Management
+                    </h2>
+                    <div className="text-sm text-gray-600">
+                        Total: {students.length} | Approved: {students.filter(s => s.status === 'approved').length} | Pending: {students.filter(s => s.status === 'pending').length}
+                    </div>
+                </div>
             }
         >
             <Head title="Students" />

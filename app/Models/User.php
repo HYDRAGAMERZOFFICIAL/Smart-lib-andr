@@ -26,6 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'photo',
         'password',
         'is_approved',
+        'is_admin',
         'email_verified_at',
     ];
 
@@ -77,5 +78,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification()
     {
         $this->notify(new CustomVerifyEmail);
+    }
+
+    public function isAdmin()
+    {
+        return $this->is_admin === true;
     }
 }

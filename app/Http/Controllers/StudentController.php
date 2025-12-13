@@ -11,9 +11,14 @@ class StudentController extends Controller
     private function authorizeStudent(Student $student)
     {
         $user = auth()->user();
-        if ($user->role !== 'admin' && $student->created_by !== $user->id) {
+        if (!$user || (!$user->is_admin && $student->created_by !== $user->id)) {
             abort(403, 'Unauthorized');
         }
+    }
+
+    private function isAdmin()
+    {
+        return auth()->user() && auth()->user()->is_admin;
     }
 
     public function index(Request $request)
@@ -22,7 +27,7 @@ class StudentController extends Controller
         
         $query = Student::query();
         
-        if ($user->role !== 'admin') {
+        if (!$this->isAdmin()) {
             $query->where('created_by', $user->id);
         }
         
@@ -38,6 +43,10 @@ class StudentController extends Controller
             $query->where('status', $request->status);
         }
         
+        if ($request->department) {
+            $query->where('department', $request->department);
+        }
+        
         $students = $query->latest()->paginate(25)->withQueryString();
 
         return Inertia::render('Students/Index', [
@@ -45,7 +54,9 @@ class StudentController extends Controller
             'filters' => [
                 'search' => $request->search,
                 'status' => $request->status,
-            ]
+                'department' => $request->department,
+            ],
+            'isAdmin' => $this->isAdmin(),
         ]);
     }
 
@@ -138,10 +149,7 @@ class StudentController extends Controller
             'new_password' => 'required|min:6'
         ]);
 
-        $user = $student->user;
-        if ($user) {
-            $user->update(['password' => bcrypt($request->input('new_password'))]);
-        }
+        $student->update(['password' => $request->input('new_password')]);
 
         return back()->with('success', 'Password reset successfully');
     }

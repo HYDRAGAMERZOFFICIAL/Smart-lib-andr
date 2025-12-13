@@ -5,6 +5,7 @@ import { useState } from 'react';
 export default function StudentShow({ student, borrowingHistory = [], activeLoans = [], fines = [] }) {
     const [showPasswordReset, setShowPasswordReset] = useState(false);
     const [resetPassword, setResetPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleResetPassword = () => {
         if (confirm('Reset password for this student?')) {
@@ -110,13 +111,32 @@ export default function StudentShow({ student, borrowingHistory = [], activeLoan
                         {showPasswordReset && (
                             <div className="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200">
                                 <h4 className="font-medium text-gray-900 mb-3">Reset Password</h4>
-                                <input
-                                    type="password"
-                                    placeholder="New Password"
-                                    value={resetPassword}
-                                    onChange={(e) => setResetPassword(e.target.value)}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-md mb-3 focus:ring-blue-500 focus:border-blue-500"
-                                />
+                                <div className="relative mb-3">
+                                    <input
+                                        type={showPassword ? "text" : "password"}
+                                        placeholder="New Password"
+                                        value={resetPassword}
+                                        onChange={(e) => setResetPassword(e.target.value)}
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 pr-10"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute right-3 top-2.5 text-gray-600 hover:text-gray-900"
+                                        title={showPassword ? "Hide password" : "Show password"}
+                                    >
+                                        {showPassword ? (
+                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                                <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                                            </svg>
+                                        ) : (
+                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-14-14zM10 5c3.478 0 6.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-2.003 0-3.896-.537-5.541-1.506l1.507-1.507c1.22.634 2.614.986 4.034.986 4.418 0 8.268-2.943 9.542-7-1.274-4.057-5.064-7-9.542-7-1.42 0-2.814.352-4.034.986L4.459 3.494C6.104 2.537 8 2 10 2z" clipRule="evenodd" />
+                                            </svg>
+                                        )}
+                                    </button>
+                                </div>
                                 <div className="flex gap-2">
                                     <button
                                         onClick={handleResetPassword}

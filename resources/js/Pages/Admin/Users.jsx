@@ -14,7 +14,8 @@ export default function Users({ users }) {
         mobile: '',
         password: '',
         password_confirmation: '',
-        role: 'member'
+        is_admin: false,
+        is_approved: true
     });
     const [errors, setErrors] = useState({});
 
@@ -27,18 +28,20 @@ export default function Users({ users }) {
                 mobile: '',
                 password: '',
                 password_confirmation: '',
-                role: 'member'
+                is_admin: false,
+                is_approved: true
             });
             setErrors({});
         }
     }, [showCreateModal, showEditModal]);
 
-    const handleRoleChange = (userId, newRole) => {
-        if (confirm(`Are you sure you want to change this user's role to ${newRole}?`)) {
+    const handleRoleChange = (userId, isAdmin) => {
+        const newStatus = isAdmin ? 'Admin' : 'Regular User';
+        if (confirm(`Are you sure you want to change this user's role to ${newStatus}?`)) {
             setProcessing(true);
             router.post(route('admin.users.update-role'), { 
                 userId, 
-                role: newRole 
+                is_admin: isAdmin 
             }, {
                 onSuccess: () => setProcessing(false),
                 onError: () => {
@@ -66,7 +69,8 @@ export default function Users({ users }) {
             mobile: user.mobile || '',
             password: '',
             password_confirmation: '',
-            role: user.role
+            is_admin: user.is_admin || false,
+            is_approved: user.is_approved || false
         });
         setShowEditModal(true);
     };
@@ -205,9 +209,9 @@ export default function Users({ users }) {
                                             </td>
                                             <td className="whitespace-nowrap px-6 py-4">
                                                 <span className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
-                                                    user.role === 'admin' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+                                                    user.is_admin ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
                                                 }`}>
-                                                    {user.role === 'admin' ? 'Admin' : 'Member'}
+                                                    {user.is_admin ? 'Admin' : 'User'}
                                                 </span>
                                             </td>
                                             <td className="whitespace-nowrap px-6 py-4">
@@ -225,11 +229,11 @@ export default function Users({ users }) {
                                                 <div className="flex space-x-2">
                                                     <select
                                                         className="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                                        value={user.role}
-                                                        onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                                                        value={user.is_admin ? 'admin' : 'user'}
+                                                        onChange={(e) => handleRoleChange(user.id, e.target.value === 'admin')}
                                                         disabled={processing}
                                                     >
-                                                        <option value="member">Member</option>
+                                                        <option value="user">User</option>
                                                         <option value="admin">Admin</option>
                                                     </select>
                                                     
@@ -350,19 +354,30 @@ export default function Users({ users }) {
                                                     />
                                                 </div>
                                                 
-                                                <div>
-                                                    <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
-                                                    <select
-                                                        name="role"
-                                                        id="role"
-                                                        value={formData.role}
-                                                        onChange={handleInputChange}
-                                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                                    >
-                                                        <option value="member">Member</option>
-                                                        <option value="admin">Admin</option>
-                                                    </select>
-                                                    {errors.role && <p className="mt-1 text-sm text-red-600">{errors.role}</p>}
+                                                <div className="flex items-center">
+                                                    <input
+                                                        type="checkbox"
+                                                        name="is_admin"
+                                                        id="is_admin"
+                                                        checked={formData.is_admin}
+                                                        onChange={(e) => setFormData(prev => ({...prev, is_admin: e.target.checked}))}
+                                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                                    />
+                                                    <label htmlFor="is_admin" className="ml-2 block text-sm font-medium text-gray-700">Admin User</label>
+                                                    {errors.is_admin && <p className="mt-1 text-sm text-red-600">{errors.is_admin}</p>}
+                                                </div>
+                                                
+                                                <div className="flex items-center">
+                                                    <input
+                                                        type="checkbox"
+                                                        name="is_approved"
+                                                        id="is_approved"
+                                                        checked={formData.is_approved}
+                                                        onChange={(e) => setFormData(prev => ({...prev, is_approved: e.target.checked}))}
+                                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                                    />
+                                                    <label htmlFor="is_approved" className="ml-2 block text-sm font-medium text-gray-700">Approved</label>
+                                                    {errors.is_approved && <p className="mt-1 text-sm text-red-600">{errors.is_approved}</p>}
                                                 </div>
                                             </div>
                                         </div>
@@ -478,19 +493,30 @@ export default function Users({ users }) {
                                                     />
                                                 </div>
                                                 
-                                                <div>
-                                                    <label htmlFor="edit_role" className="block text-sm font-medium text-gray-700">Role</label>
-                                                    <select
-                                                        name="role"
-                                                        id="edit_role"
-                                                        value={formData.role}
-                                                        onChange={handleInputChange}
-                                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                                    >
-                                                        <option value="member">Member</option>
-                                                        <option value="admin">Admin</option>
-                                                    </select>
-                                                    {errors.role && <p className="mt-1 text-sm text-red-600">{errors.role}</p>}
+                                                <div className="flex items-center">
+                                                    <input
+                                                        type="checkbox"
+                                                        name="is_admin"
+                                                        id="edit_is_admin"
+                                                        checked={formData.is_admin}
+                                                        onChange={(e) => setFormData(prev => ({...prev, is_admin: e.target.checked}))}
+                                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                                    />
+                                                    <label htmlFor="edit_is_admin" className="ml-2 block text-sm font-medium text-gray-700">Admin User</label>
+                                                    {errors.is_admin && <p className="mt-1 text-sm text-red-600">{errors.is_admin}</p>}
+                                                </div>
+                                                
+                                                <div className="flex items-center">
+                                                    <input
+                                                        type="checkbox"
+                                                        name="is_approved"
+                                                        id="edit_is_approved"
+                                                        checked={formData.is_approved}
+                                                        onChange={(e) => setFormData(prev => ({...prev, is_approved: e.target.checked}))}
+                                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                                    />
+                                                    <label htmlFor="edit_is_approved" className="ml-2 block text-sm font-medium text-gray-700">Approved</label>
+                                                    {errors.is_approved && <p className="mt-1 text-sm text-red-600">{errors.is_approved}</p>}
                                                 </div>
                                             </div>
                                         </div>
