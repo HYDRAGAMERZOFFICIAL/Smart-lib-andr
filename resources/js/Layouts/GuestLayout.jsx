@@ -8,11 +8,9 @@ export default function GuestLayout({ children }) {
             <Toast />
             <div className="w-full max-w-md">
                 <div className="mb-8 flex justify-center">
-                    <a>
-                        <Link className="transition-transform hover:scale-105">
-                            <ApplicationLogo />
-                        </Link>
-                    </a>
+                    <Link className="transition-transform hover:scale-105">
+                        <ApplicationLogo />
+                    </Link>
                 </div>
 
                 <div className="w-full overflow-hidden bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 sm:p-8 border border-gray-200 dark:border-gray-700">
