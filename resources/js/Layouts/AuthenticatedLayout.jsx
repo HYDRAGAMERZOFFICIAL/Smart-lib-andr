@@ -114,6 +114,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                         >
                                             Notifications
                                         </NavLink>
+                                        <NavLink
+                                            href={route('library-card.show')}
+                                            active={route().current('library-card.*')}
+                                        >
+                                            Library Card
+                                        </NavLink>
                                     </>
                                 )}
                             </div>
@@ -291,6 +297,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                     active={route().current('notifications.*')}
                                 >
                                     Notifications
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route('library-card.show')}
+                                    active={route().current('library-card.*')}
+                                >
+                                    Library Card
                                 </ResponsiveNavLink>
                             </>
                         )}

@@ -43,6 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Library Card Routes
     Route::get('/library-card', [LibraryCardController::class, 'show'])->name('library-card.show');
     Route::post('/library-card/download', [LibraryCardController::class, 'download'])->name('library-card.download');
+    Route::post('/library-card/request', [LibraryCardController::class, 'request'])->name('library-card.request');
     
     // Book Management Routes (Student read-only)
     Route::get('/books', [BookController::class, 'index'])->name('books.index');

@@ -10,10 +10,10 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
             $table->string('card_number')->unique();
-            $table->string('barcode')->unique();
+            $table->string('barcode')->nullable()->unique();
             $table->string('qr_code')->nullable();
-            $table->enum('status', ['active', 'inactive', 'lost'])->default('active');
-            $table->date('issued_date');
+            $table->enum('status', ['active', 'inactive', 'lost', 'pending_replacement'])->default('active');
+            $table->date('issued_date')->nullable();
             $table->date('expiry_date')->nullable();
             $table->date('lost_date')->nullable();
             $table->string('issued_by')->nullable();
